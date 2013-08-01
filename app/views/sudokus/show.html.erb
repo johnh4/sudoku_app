@@ -1,0 +1,65 @@
+
+<div id="debug_info" class="hide">
+	my_board: <%= @sudoku.my_board %>
+	<br>
+	solution: <%= @sudoku.solution %>
+	<br>
+	new_board: <%= @new_board %>
+</div>
+
+<%= form_for Sudoku.new do |f| %>
+	<%= f.hidden_field :my_board, value: @new_board %>
+	<%= f.submit "New Board", id: "new_button" %>
+<% end %>
+
+<%= button_tag "Submit board", id: "submit_board", ans: @sudoku.solution %>
+
+<%= button_tag "Show solution", id: "show_sol" %>
+
+<%= button_tag "Show debug", id: "debug_btn" %>
+
+<div id="both_boards">
+<h3 id="board_heading">New Board</h3>
+<div id="board_div">
+	<table id="board">
+		<% for i in 0..8 %>
+			<tr>
+				<% for j in 0..8 %>
+					<% id_num = 9*i + j %>
+					<td>
+						<% num = @sudoku.my_board[id_num] %>
+						<input type="text" maxlength="1" id="td_<%= id_num %>"
+						       class="<%= 'wall' if (j+1)%3==0 %> 
+						              <%= 'floor' if (i+1)%3==0  %>"
+						       value="<%= num == '0' ? '' : num  %>"
+						       onkeyup="check_board(this, <%= id_num %>, 
+						                 <%= @sudoku.solution[id_num]%>);">
+					</td>		
+				<% end %>
+			</tr>
+		<% end %>
+	</table>
+</div>
+<div id="sol_div" class="hide" >
+	<h3 id="solution_heading">Solution</h3>
+	<table id="solution">
+		<% for i in 0..8 %>
+			<tr>
+				<% for j in 0..8 %>
+					<% id_num = 9*i + j %>
+					<td>
+						<% num = @sudoku.solution[id_num] %>
+						<input type="text" maxlength="1" id="td_<%= id_num %>_sol"
+						       class="<%= 'wall' if (j+1)%3==0 %> 
+						              <%= 'floor' if (i+1)%3==0  %>"
+						       value="<%= num == '0' ? '' : num  %>"
+						       onkeyup="check_board(this, <%= id_num %>, 
+						                 <%= @sudoku.solution[id_num]%>);">
+					</td>		
+				<% end %>
+			</tr>
+		<% end %>
+	</table>
+</div>
+</div>
+.
